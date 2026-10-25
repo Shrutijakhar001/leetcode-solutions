@@ -10,30 +10,36 @@
  */
 class Solution {
     public ListNode reverseBetween(ListNode head, int left, int right) {
-        ArrayList<Integer> list=new ArrayList<>();
-        ListNode curr=head;
-        while(curr!=null){
-            list.add(curr.val);
-            curr=curr.next;
+        ListNode t=head;
+        ListNode before=null;
+        int pos=1;
+        if(head==null || left==right){
+            return head;
         }
-        int i=left-1;
-        int j=right-1;
-        curr=head;
-        while(i<j){
-            int temp=list.get(i);
-            list.set(i,list.get(j));
-            list.set(j,temp);
-            i++;
-            j--;
+        while(pos<left){
+            before=t;
+            t=t.next;
+            pos++;
         }
-        curr=head;
-        int index=0;
-        while(curr!=null){
-            curr.val=list.get(index++);
-            curr=curr.next;
-
+        ListNode curr=t;
+        ListNode prev=null;
+        int times=right-left+1;
+        while(times>0){
+            ListNode next=curr.next;
+            curr.next=prev;
+            prev=curr;
+            curr=next;
+            times--;
         }
+        if(before==null){
+            head=prev;
+        }else{
+            before.next=prev;
+        }
+        t.next=curr;
         return head;
+        
+        
         
     }
 }
